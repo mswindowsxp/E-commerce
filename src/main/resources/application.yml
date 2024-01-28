@@ -1,0 +1,20 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    generate-ddl: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: ecommerce
+    password: ecommerce
+    driver-class-name: org.postgresql.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+  sql:
+    init:
+      mode: always
+authentication:
+  config:
+    secret-key: FigXRDmiMo2RBtzgTdydkLElfwwWVWe5dsBPIGhUEZRlbkSCwOtCbjCODOpfo7tUJB6L3vEI3hrHVBknR_323AJiZ1O_-688oGp0Vwo-KBSGs-qYGs7a4t4UjcDgQuoByepCzjj01RNbzm9hTskawuweKEGzpHEXsVXRW2qWnls
+    expiration-time: 1800  # second

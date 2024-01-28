@@ -1,0 +1,10 @@
+version: '3.1'
+services:
+  ecommerce:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=ecommerce
+      - POSTGRES_PASSWORD=ecommerce
+    ports:
+      - "5432:5432"
