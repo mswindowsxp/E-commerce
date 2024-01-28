@@ -32,7 +32,7 @@ public abstract class BaseServiceImpl<E extends BaseEntity<ID>, D extends BaseDT
     protected QuerydslPredicateExecutor<E> queryDsl;
     protected BaseMapper<E, D> mapper;
 
-    public BaseServiceImpl(JpaRepository<E, ID> repo, BaseMapper<E, D> mapper, QuerydslPredicateExecutor<E> queryDsl) {
+    protected BaseServiceImpl(JpaRepository<E, ID> repo, BaseMapper<E, D> mapper, QuerydslPredicateExecutor<E> queryDsl) {
         this.repo = repo;
         this.mapper = mapper;
         this.queryDsl = queryDsl;
@@ -46,8 +46,8 @@ public abstract class BaseServiceImpl<E extends BaseEntity<ID>, D extends BaseDT
     }
 
     @Override
-    public ResponseModel<D> add(D DTO) {
-        E entity = mapper.toEntity(DTO);
+    public ResponseModel<D> add(D dto) {
+        E entity = mapper.toEntity(dto);
         repo.save(entity);
         return ResponseModel.successful(ResponseMessage.SUCCESS.getMessage());
     }
@@ -56,7 +56,7 @@ public abstract class BaseServiceImpl<E extends BaseEntity<ID>, D extends BaseDT
     public ResponseModel<D> update(D d) {
         E e = mapper.toEntity(d);
         Optional<E> eOptional = repo.findById(e.getId());
-        if (!eOptional.isPresent()) {
+        if (eOptional.isEmpty()) {
             return ResponseModel.failure(ResponseMessage.NOT_FOUND.getMessage(), 204);
         }
         E eSave = eOptional.get();
@@ -84,7 +84,7 @@ public abstract class BaseServiceImpl<E extends BaseEntity<ID>, D extends BaseDT
     @Override
     public ResponseModel<D> getById(ID id) {
         Optional<E> eOptional = repo.findById(id);
-        if (!eOptional.isPresent()) {
+        if (eOptional.isEmpty()) {
             return ResponseModel.failure(ResponseMessage.NOT_FOUND.getMessage(), 404);
         }
         D d = mapper.toDTO(eOptional.get());
@@ -94,7 +94,7 @@ public abstract class BaseServiceImpl<E extends BaseEntity<ID>, D extends BaseDT
     @Override
     public ResponseModel<String> deleteById(ID id) {
         Optional<E> eOptional = repo.findById(id);
-        if (!eOptional.isPresent()) {
+        if (eOptional.isEmpty()) {
             return ResponseModel.failure(ResponseMessage.NOT_FOUND.getMessage(), 204);
         }
         repo.deleteById(id);
@@ -133,7 +133,4 @@ public abstract class BaseServiceImpl<E extends BaseEntity<ID>, D extends BaseDT
         return ResponseModel.successful(ResponseMessage.SUCCESS.getMessage(), dResponsePageableModel);
     }
 
-    private E createContents(Class<E> clazz) throws IllegalAccessException, InstantiationException {
-        return clazz.newInstance();
-    }
 }

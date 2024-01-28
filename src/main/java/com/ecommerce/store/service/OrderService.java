@@ -11,7 +11,7 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.security.core.Authentication;
 
 public abstract class OrderService extends BaseServiceImpl<OrderDetail, OrderDTO, Long> {
-    public OrderService(JpaRepository<OrderDetail, Long> repo, BaseMapper<OrderDetail, OrderDTO> mapper, QuerydslPredicateExecutor<OrderDetail> queryDsl) {
+    protected OrderService(JpaRepository<OrderDetail, Long> repo, BaseMapper<OrderDetail, OrderDTO> mapper, QuerydslPredicateExecutor<OrderDetail> queryDsl) {
         super(repo, mapper, queryDsl);
     }
 

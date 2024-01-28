@@ -80,29 +80,32 @@ public class AccountServiceImpl implements IAccountService {
                 signUpRequest.getFullName(),
                 signUpRequest.getAddress()
         );
-        Set<Role> roles = new HashSet<>();
-        Set<String> roleInput = signUpRequest.getRoles();
-
-
-        roleInput.forEach(role -> {
-            switch (role) {
-                case "admin":
-                    Role adminRole = roleRepository.findByName(RoleConstant.ROLE_ADMIN)
-                            .orElseThrow(() -> new RuntimeException(ResponseMessage.AUTH_ROLE_NOT_FIND.getMessage()));
-                    roles.add(adminRole);
-                    break;
-                default:
-                    Role userRole = roleRepository.findByName(RoleConstant.ROLE_USER)
-                            .orElseThrow(() -> new RuntimeException(ResponseMessage.AUTH_ROLE_NOT_FIND.getMessage()));
-                    roles.add(userRole);
-            }
-        });
+        Set<Role> roles = getRoles(signUpRequest);
 
         user.setRoles(roles);
         user.setAuthProvider(AuthenticationProvider.LOCAL);
         AppUtils.validatorUser(user);
         userRepository.save(user);
         return ResponseModel.successful(HttpStatus.OK.toString());
+    }
+
+    private Set<Role> getRoles(SignUpRequest signUpRequest) {
+        Set<Role> roles = new HashSet<>();
+        Set<String> roleInput = signUpRequest.getRoles();
+
+
+        roleInput.forEach(role -> {
+            if (role.equals("admin")) {
+                Role adminRole = roleRepository.findByName(RoleConstant.ROLE_ADMIN)
+                        .orElseThrow(() -> new RuntimeException(ResponseMessage.AUTH_ROLE_NOT_FIND.getMessage()));
+                roles.add(adminRole);
+            } else {
+                Role userRole = roleRepository.findByName(RoleConstant.ROLE_USER)
+                        .orElseThrow(() -> new RuntimeException(ResponseMessage.AUTH_ROLE_NOT_FIND.getMessage()));
+                roles.add(userRole);
+            }
+        });
+        return roles;
     }
 
 }

@@ -2,9 +2,12 @@ package com.ecommerce.store.model.predicate;
 
 import com.ecommerce.store.model.QOrderDetail;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class OrderExpression {
 
     private static final QOrderDetail ORDER_DETAIL = QOrderDetail.orderDetail;

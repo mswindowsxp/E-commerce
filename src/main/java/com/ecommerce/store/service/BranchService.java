@@ -10,7 +10,7 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
 public abstract class BranchService extends BaseServiceImpl<Branch, BranchDTO, Long> {
 
-    public BranchService(JpaRepository<Branch, Long> repo, BaseMapper<Branch, BranchDTO> mapper,
+    protected BranchService(JpaRepository<Branch, Long> repo, BaseMapper<Branch, BranchDTO> mapper,
                          QuerydslPredicateExecutor<Branch> queryDsl) {
         super(repo, mapper, queryDsl);
     }
